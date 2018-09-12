@@ -11,6 +11,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.InheritanceUtil;
+import synergix.plugin.intellj.syndom.SynUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class NumberTypeCompletion extends SynCompletion {
+	public static String TH6_META_MODULE = "TH6Meta";
+	public static String ROOT_DATA_TYPE_CLASS = "synergix.th6.data.meta.datatype.SynDataType";
+
 	public NumberTypeCompletion(CompletionParameters parameters) {
 		super(parameters);
 	}
@@ -28,17 +32,9 @@ public class NumberTypeCompletion extends SynCompletion {
 
 		Project project = this.getParameters().getOriginalFile().getProject();
 		Module[] modules = ModuleManager.getInstance(project).getModules();
-		Module TH6MetaModule = Arrays.stream(modules).filter(m -> "TH6Meta".equals(m.getName())).findFirst().orElse(null);
+		Module TH6MetaModule = Arrays.stream(modules).filter(m -> TH6_META_MODULE.equals(m.getName())).findFirst().orElse(null);
 
-//		PsiFile[] synAbstractDataTypeFiles = FilenameIndex.getFilesByName(project, "SynDataType.java", GlobalSearchScope.moduleScope(TH6MetaModule));
-//		if (synAbstractDataTypeFiles == null || synAbstractDataTypeFiles.length == 0) {
-//			return lookupElements;
-//		}
-//
-//		PsiJavaFile synAbstractDataTypeJavaFile = (PsiJavaFile) synAbstractDataTypeFiles[0];
-//		final PsiClass synAbstractDataTypeClass = synAbstractDataTypeJavaFile.getClasses()[0];
-
-		Collection<VirtualFile> synDataTypeVirtualFiles = FilenameIndex.getAllFilesByExt(project, "java", GlobalSearchScope.moduleScope(TH6MetaModule));
+		Collection<VirtualFile> synDataTypeVirtualFiles = FilenameIndex.getAllFilesByExt(project, SynUtil.JAVA_EXT, GlobalSearchScope.moduleScope(TH6MetaModule));
 		if (synDataTypeVirtualFiles == null || synDataTypeVirtualFiles.size() == 0) {
 			return lookupElements;
 		}
@@ -51,7 +47,7 @@ public class NumberTypeCompletion extends SynCompletion {
 			PsiJavaFile synDataTypeJavaFile = (PsiJavaFile) synDataTypeFile;
 			final PsiClass synDataTypeClass = synDataTypeJavaFile.getClasses()[0];
 
-			if (!InheritanceUtil.isInheritor(synDataTypeClass, "synergix.th6.data.meta.datatype.SynDataType")) {
+			if (!InheritanceUtil.isInheritor(synDataTypeClass, ROOT_DATA_TYPE_CLASS)) {
 				continue;
 			}
 
