@@ -21,7 +21,6 @@ public class SynCompletionContributor extends CompletionContributor {
 				public void addCompletions(@NotNull CompletionParameters parameters,
 										   ProcessingContext context,
 										   @NotNull CompletionResultSet resultSet) {
-
 					SynCompletion completion = getCompletion(parameters);
 					resultSet.addAllElements(completion.createLookupElementList());
 				}

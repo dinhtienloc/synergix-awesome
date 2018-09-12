@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Properties;
 
 public class LabelKeyCompletion extends SynCompletion {
+	private static String LABEL_PROP_FILE = "labels.properties";
+	private static String INTELLIJ_CURSOR_SYMBOL = "IntellijIdeaRulezzz";
 
 	public LabelKeyCompletion(CompletionParameters parameters) {
 		super(parameters);
@@ -25,7 +27,7 @@ public class LabelKeyCompletion extends SynCompletion {
 		List<LookupElement> lookupElements = new ArrayList<>();
 
 		Project project = this.getParameters().getOriginalFile().getProject();
-		PsiFile[] labelsFile = FilenameIndex.getFilesByName(project, "labels.properties", GlobalSearchScope.allScope(project));
+		PsiFile[] labelsFile = FilenameIndex.getFilesByName(project, LABEL_PROP_FILE, GlobalSearchScope.allScope(project));
 		if (labelsFile == null || labelsFile.length == 0) {
 			return lookupElements;
 		}
@@ -35,9 +37,9 @@ public class LabelKeyCompletion extends SynCompletion {
 			prop.load(input);
 			prop.forEach((key, value) -> {
 				String labelKey = key.toString();
-				String intelljInputValue = this.getParameters().getPosition().getText();
-				String realInputValue = intelljInputValue.replaceAll("IntellijIdeaRulezzz ", "")
-						.replaceAll("IntellijIdeaRulezzz", "");
+				String intellijInputValue = this.getParameters().getPosition().getText();
+				String realInputValue = intellijInputValue.replaceAll(INTELLIJ_CURSOR_SYMBOL, "")
+						.replaceAll(INTELLIJ_CURSOR_SYMBOL, "");
 				if (labelKey.startsWith(realInputValue)) {
 					lookupElements.add(LookupElementBuilder.create(labelKey));
 				}

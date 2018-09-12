@@ -5,6 +5,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.xml.XmlToken;
 
 public class SynUtil {
+	public static String JAVA_EXT = "java";
+
 	public static String getClosestAttributeName(CompletionParameters parameters) {
 		PsiElement element = parameters.getPosition();
 		if (element instanceof XmlToken) {

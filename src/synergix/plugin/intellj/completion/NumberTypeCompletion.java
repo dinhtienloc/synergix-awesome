@@ -19,8 +19,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class NumberTypeCompletion extends SynCompletion {
-	public static String TH6_META_MODULE = "TH6Meta";
-	public static String ROOT_DATA_TYPE_CLASS = "synergix.th6.data.meta.datatype.SynDataType";
+	private static String TH6_META_MODULE = "TH6Meta";
+	private static String ROOT_DATA_TYPE_CLASS = "synergix.th6.data.meta.datatype.SynDataType";
+	private static String TYPE_NAME_FIELD = "TYPE_NAME";
 
 	public NumberTypeCompletion(CompletionParameters parameters) {
 		super(parameters);
@@ -54,7 +55,7 @@ public class NumberTypeCompletion extends SynCompletion {
 			synDataTypeClass.accept(new JavaRecursiveElementVisitor() {
 				@Override
 				public void visitField(PsiField element) {
-					if ("TYPE_NAME".equals(element.getNameIdentifier().getText())) {
+					if (TYPE_NAME_FIELD.equals(element.getNameIdentifier().getText())) {
 						extractTypeNameFieldValue(element, lookupElements);
 					}
 					super.visitElement(element);
