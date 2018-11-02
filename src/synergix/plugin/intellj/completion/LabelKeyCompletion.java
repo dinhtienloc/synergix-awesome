@@ -16,7 +16,7 @@ import java.util.Properties;
 
 public class LabelKeyCompletion extends SynCompletion {
 	private static String LABEL_PROP_FILE = "labels.properties";
-	private static String INTELLIJ_CURSOR_SYMBOL = "IntellijIdeaRulezzz";
+	private static String INTELLIJ_CURSOR_SYMBOL = "IntellijIdeaRulezzz ";
 
 	public LabelKeyCompletion(CompletionParameters parameters) {
 		super(parameters);

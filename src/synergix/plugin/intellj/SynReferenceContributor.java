@@ -11,12 +11,12 @@ public class SynReferenceContributor extends PsiReferenceContributor {
 
     @Override
     public void registerReferenceProviders(PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue(), new PsiReferenceProvider() {
-            @NotNull
-            @Override
-            public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                return new PsiReference[]{new XmlAttributeValueSynReference((XmlAttributeValue) element)};
-            }
-        });
+//        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue(), new PsiReferenceProvider() {
+//            @NotNull
+//            @Override
+//            public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+//                return new PsiReference[]{new XmlAttributeValueSynReference((XmlAttributeValue) element)};
+//            }
+//        });
     }
 }

@@ -1,0 +1,32 @@
+<templateSet group="Synergix">
+  <template name="modulecode" value="&lt;column name=&quot;MODULE_CODE&quot; data-type=&quot;code&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert MODULE_CODE column in XML Entity File" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="transactiontypecode" value="&lt;column name=&quot;TRANSACTION_TYPE_CODE&quot; data-type=&quot;code&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert TRANSACTION_TYPE_CODE column in XML Entity File" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="dttype" value="&lt;column name=&quot;DT_TYPE&quot; data-type=&quot;legacy-enum&quot; not-null=&quot;false&quot; default-value=&quot;null&quot;/&gt;" description="Insert DT_TYPE column in XML Entity File" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="status" value="&lt;column name=&quot;STATUS&quot; data-type=&quot;legacy-enum&quot; not-null=&quot;false&quot; default-value=&quot;null&quot;/&gt;" description="Insert STATUS column in XML Entity File" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="voucherno" value="&lt;column name=&quot;VOUCHER_NO&quot; data-type=&quot;code&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert VOUCHER_NO column in XML Entity File" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="revisionno" value="&lt;column name=&quot;REVISION_NO&quot; data-type=&quot;integer&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert REVISION_NO column in XML Entity File" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+</templateSet>
