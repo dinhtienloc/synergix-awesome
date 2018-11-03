@@ -1,18 +1,13 @@
 package synergix.plugin.intellj;
 
 import com.intellij.codeInsight.completion.*;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.xml.XmlElementType;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
-import synergix.plugin.intellj.completion.EmptyCompletion;
-import synergix.plugin.intellj.completion.LabelKeyCompletion;
-import synergix.plugin.intellj.completion.NumberTypeCompletion;
-import synergix.plugin.intellj.completion.SynCompletion;
+import synergix.plugin.intellj.completion.*;
 import synergix.plugin.intellj.constants.Constants;
-import synergix.plugin.intellj.syndom.SynUtil;
+import synergix.plugin.intellj.utils.SynUtil;
 
 public class SynCompletionContributor extends CompletionContributor {
 	public SynCompletionContributor() {
@@ -36,6 +31,8 @@ public class SynCompletionContributor extends CompletionContributor {
 					return new LabelKeyCompletion(parameters);
 				case Constants.XmlAttribute.NUMBER_TYPE:
 					return new NumberTypeCompletion(parameters);
+				case Constants.XmlAttribute.DATA_TYPE:
+					return new DataTypeCompletition(parameters);
 			}
 		}
 

@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import static synergix.plugin.intellj.constants.Constants.INTELLIJ_CURSOR_SYMBOL;
+
 public class LabelKeyCompletion extends SynCompletion {
 	private static String LABEL_PROP_FILE = "labels.properties";
-	private static String INTELLIJ_CURSOR_SYMBOL = "IntellijIdeaRulezzz ";
 
 	public LabelKeyCompletion(CompletionParameters parameters) {
 		super(parameters);

@@ -1,5 +1,50 @@
 <templateSet group="Synergix">
-  <template name="modulecode" value="&lt;column name=&quot;MODULE_CODE&quot; data-type=&quot;code&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert MODULE_CODE column in XML Entity File" toReformat="true" toShortenFQNames="true">
+  <template name="column" value="&lt;column name=&quot;$column_name$&quot; data-type=&quot;$data_type$&quot; not-null=&quot;$not_null$&quot; default-value=&quot;$default_value$&quot;/&gt;" description="Insert a column" toReformat="false" toShortenFQNames="true">
+    <variable name="column_name" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="data_type" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="not_null" expression="" defaultValue="false" alwaysStopAt="true" />
+    <variable name="default_value" expression="" defaultValue="null" alwaysStopAt="true" />
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="pk" value="&lt;primary-key&gt;&#10;    &lt;column name=&quot;$column_name$&quot; data-type=&quot;$data_type$&quot; not-null=&quot;true&quot;/&gt;&#10;&lt;/primary-key&gt;" description="Insert primary key" toReformat="false" toShortenFQNames="true">
+    <variable name="column_name" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="data_type" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="foreign-key" value="&lt;foreign-key parent-table=&quot;$parent_table$&quot; columns=&quot;$columns$&quot;/&gt;" description="Insert a normal foreign key" toReformat="false" toShortenFQNames="true">
+    <variable name="parent_table" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="columns" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="foreign-key-parent-attr" value="&lt;foreign-key parent-table=&quot;$parent_table$&quot; columns=&quot;$columns$&quot; parent-mapping=&quot;$parent$&quot;/&gt;" description="Foreign key with parent attribute" toReformat="false" toShortenFQNames="true">
+    <variable name="parent_table" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="columns" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="parent" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="foreign-key-parent-child-attr" value="&lt;foreign-key parent-table=&quot;$parent_table$&quot; columns=&quot;$columns$&quot; parent-mapping=&quot;$parent$&quot; child-mapping=&quot;$child$&quot;/&gt;" description="Foreign key with parent and child attributes" toReformat="false" toShortenFQNames="true">
+    <variable name="parent_table" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="columns" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="parent" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="child" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="foreign-key-parent-child-one-attr" value="&lt;foreign-key parent-table=&quot;$parent_table$&quot; columns=&quot;$columns$&quot; parent-mapping=&quot;$parent$&quot; child-mapping=&quot;$child$&quot; one-to-one=&quot;$oto$&quot;/&gt;" description="Foreign key with parent, child-mapping and one-to-one attributes" toReformat="false" toShortenFQNames="true">
+    <variable name="parent_table" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="columns" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="parent" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="child" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="oto" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="XML" value="true" />
     </context>
@@ -19,12 +64,22 @@
       <option name="XML" value="true" />
     </context>
   </template>
+  <template name="modulecode" value="&lt;column name=&quot;MODULE_CODE&quot; data-type=&quot;code&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert MODULE_CODE column in XML Entity File" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
   <template name="voucherno" value="&lt;column name=&quot;VOUCHER_NO&quot; data-type=&quot;code&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert VOUCHER_NO column in XML Entity File" toReformat="false" toShortenFQNames="true">
     <context>
       <option name="XML" value="true" />
     </context>
   </template>
-  <template name="revisionno" value="&lt;column name=&quot;REVISION_NO&quot; data-type=&quot;integer&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert REVISION_NO column in XML Entity File" toReformat="false" toShortenFQNames="true">
+  <template name="revision_no" value="&lt;column name=&quot;REVISION_NO&quot; data-type=&quot;integer&quot; not-null=&quot;false&quot; default-value=&quot;null&quot;/&gt;" description="Insert REVISION_NO column in XML Entity File" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="lineitemno" value="&lt;column name=&quot;LINE_ITEM_NO&quot; data-type=&quot;code&quot; not-null=&quot;true&quot; default-value=&quot;null&quot;/&gt;" description="Insert LINE_ITEM_NO column in XML Entity File" toReformat="false" toShortenFQNames="true">
     <context>
       <option name="XML" value="true" />
     </context>

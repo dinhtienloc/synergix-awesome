@@ -1,4 +1,4 @@
-package synergix.plugin.intellj.template.provider;
+package synergix.plugin.intellj.templates.provider;
 
 import com.intellij.codeInsight.template.impl.DefaultLiveTemplatesProvider;
 import org.jetbrains.annotations.Nullable;

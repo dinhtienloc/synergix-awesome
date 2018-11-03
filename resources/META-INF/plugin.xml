@@ -1,12 +1,15 @@
 <idea-plugin>
   <id>synergix.plugin.intellj</id>
-  <name>Intellj Plugin for Synergix</name>
-  <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <name>Synergix Toolkit</name>
+  <version>1.1</version>
+  <vendor email="chad.dinh@synergixtech.com" url="https://github.com/dinhtienloc/synergix-intellij-plugin">Dinh Tien Loc</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      This plugin provides a few utilities to help developers code faster at Synergix:
+      <ul>
+      <li>Code completion for some SynComponent's attributes: <em>labelKey</em>, <em>numberType</em>,...</li>
+      <li>Live Templates: auto generating code for common columns in XML Entity File.</li>
+      </ul><br>
     ]]></description>
 
   <change-notes><![CDATA[
@@ -25,16 +28,23 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <psi.referenceContributor implementation="synergix.plugin.intellj.SynReferenceContributor"/>
+    <!--<psi.referenceContributor implementation="synergix.plugin.intellj.SynReferenceContributor"/>-->
     <completion.contributor language="XML" implementationClass="synergix.plugin.intellj.SynCompletionContributor"/>
 
-    <defaultLiveTemplatesProvider implementation="synergix.plugin.intellj.template.provider.SynergixTemplateProvider"/>
-    <liveTemplateContext implementation="synergix.plugin.intellj.template.context.SynergixContextType"/>
+    <defaultLiveTemplatesProvider implementation="synergix.plugin.intellj.templates.provider.SynergixTemplateProvider"/>
+    <liveTemplateContext implementation="synergix.plugin.intellj.templates.context.SynergixContextType"/>
 
+    <!--Templates-->
+    <internalFileTemplate name="XML Entity" />
   </extensions>
 
   <actions>
     <!-- Add your actions here -->
+    <action id="Synergix.CreateSynergixComponent"
+            class="synergix.plugin.intellj.actions.CreateXmlEntityFile">
+      <add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
+
+    </action>
   </actions>
 
 

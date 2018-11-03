@@ -1,4 +1,4 @@
-package synergix.plugin.intellj.template.context;
+package synergix.plugin.intellj.templates.context;
 
 import com.intellij.codeInsight.template.TemplateContextType;
 import com.intellij.psi.PsiFile;
@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class SynergixContextType extends TemplateContextType {
     protected SynergixContextType() {
-
         super("SYNERGIX", "Synergix");
     }
 
