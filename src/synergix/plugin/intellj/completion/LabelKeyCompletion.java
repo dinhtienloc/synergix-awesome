@@ -42,7 +42,7 @@ public class LabelKeyCompletion extends SynCompletion {
 				String realInputValue = intellijInputValue.replaceAll(INTELLIJ_CURSOR_SYMBOL, "")
 						.replaceAll(INTELLIJ_CURSOR_SYMBOL, "");
 				if (labelKey.startsWith(realInputValue)) {
-					lookupElements.add(LookupElementBuilder.create(labelKey));
+					lookupElements.add(LookupElementBuilder.create(labelKey).withTypeText(value.toString(), true));
 				}
 			});
 			return lookupElements;

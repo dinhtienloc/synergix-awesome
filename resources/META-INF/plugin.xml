@@ -7,16 +7,17 @@
   <description><![CDATA[
       This plugin provides a few utilities to help developers code faster at Synergix:
       <ul>
-      <li>Code completion for some SynComponent's attributes: <em>labelKey</em>, <em>numberType</em>,...</li>
+      <li>Code completion for some SynComponent's attributes: <em>labelKey</em>, <em>numberType</em>, <em>data-type</em>...</li>
+      <li>Support create XML Entity File.</li>
       <li>Live Templates: auto generating code for common columns in XML Entity File.</li>
       </ul><br>
     ]]></description>
 
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-  </change-notes>
+  <!--<change-notes><![CDATA[-->
+      <!--Add change notes here.<br>-->
+      <!--<em>most HTML tags may be used</em>-->
+    <!--]]>-->
+  <!--</change-notes>-->
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
   <idea-version since-build="173.0"/>
@@ -40,7 +41,7 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="Synergix.CreateSynergixComponent"
+    <action id="Synergix.CreateXMLEntityFile"
             class="synergix.plugin.intellj.actions.CreateXmlEntityFile">
       <add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
 
