@@ -6,5 +6,7 @@ import javax.swing.*;
 
 public class SynergixIcons {
     public static final Icon SynergixIcon = IconLoader.findIcon("/synlogo.png");
-    private SynergixIcons() {}
+
+    private SynergixIcons() {
+    }
 }

@@ -5,8 +5,6 @@ import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
-import com.intellij.ide.fileTemplates.actions.AttributesDefaults;
-import com.intellij.ide.fileTemplates.ui.CreateFromTemplateDialog;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;

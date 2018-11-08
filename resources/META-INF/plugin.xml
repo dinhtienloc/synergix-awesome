@@ -24,12 +24,14 @@
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+  <!-- uncomment to enable plugin in all products -->
+
 
   <extensions defaultExtensionNs="com.intellij">
-    <!--<psi.referenceContributor implementation="synergix.plugin.intellj.SynReferenceContributor"/>-->
+    <configurationType implementation="synergix.plugin.intellj.execution.configuration.SyncDbRunConfigurationType"/>
+    <!--<programRunner implementation="synergix.plugin.intellj.runner.SyncDbRunner"/>-->
+
+    <psi.referenceContributor implementation="synergix.plugin.intellj.SynReferenceContributor"/>
     <completion.contributor language="XML" implementationClass="synergix.plugin.intellj.SynCompletionContributor"/>
 
     <defaultLiveTemplatesProvider implementation="synergix.plugin.intellj.templates.provider.SynergixTemplateProvider"/>
