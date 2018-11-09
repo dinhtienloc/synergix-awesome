@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.Arrays;
+import java.util.List;
 
 public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> implements PanelWithAnchor {
     private SyncDbConfiguration syncDbConfiguration;
@@ -33,6 +35,15 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
     private JBLabel mySuperModelStableDirectoryLabel;
     private TextFieldWithBrowseButton mySuperModelStableDirectory;
 
+    private JPanel dbCommandOption;
+    private LabeledComponent<JTextField> myCommandOption;
+    private LabeledComponent<JTextField> myDbListLabeledComponent;
+    private LabeledComponent<JTextField> mySchemaOption;
+    private JPanel mySyncActionPanel;
+    private JPanel myDbListPanel;
+
+    private JPanel dbNamesOption;
+
     public SyncDbConfigurable(final Project project) {
         this.myProject = project;
         mySuperModelDistDirectoryLabel.setLabelFor(mySuperModelDistDirectory.getTextField());
@@ -44,6 +55,8 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
         mySuperModelStableDirectory.addBrowseFolderListener("Choose Super Model's Stable Directory", null, null,
                 FileChooserDescriptorFactory.createSingleFolderDescriptor());
 
+        myCommandOption.getComponent().setText("sync");
+        mySchemaOption.getComponent().setText("modmain");
         mySuperModelDistDirectory.getTextField().getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -82,12 +95,22 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
         this.syncDbConfiguration = s;
         this.mySuperModelDistDirectory.setText(s.getSuperModelDistDirectory());
         this.mySuperModelStableDirectory.setText(s.getSuperModelStableDirectory());
+        this.myCommandOption.getComponent().setText(s.getDbCommand());
+        this.mySchemaOption.getComponent().setText(s.getDbSchema());
+        this.myDbListLabeledComponent.getComponent().setText(String.join(",", s.getDbNames().toArray(new String[s.getDbNames().size()])));
     }
 
     @Override
     protected void applyEditorTo(@NotNull SyncDbConfiguration s) throws ConfigurationException {
         s.setSuperModelDistDirectory(mySuperModelDistDirectory.getText());
         s.setSuperModelStableDirectory(mySuperModelStableDirectory.getText());
+        s.setDbCommand(myCommandOption.getComponent().getText());
+        s.setDbSchema(mySchemaOption.getComponent().getText());
+
+        String dbListText = myDbListLabeledComponent.getComponent().getText();
+        if (!StringUtils.isEmpty(dbListText)) {
+            s.setDbNames(Arrays.asList(dbListText.split(",")));
+        }
     }
 
     @NotNull

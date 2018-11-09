@@ -1,16 +1,11 @@
 <idea-plugin>
   <id>synergix.plugin.intellj</id>
-  <name>Synergix Toolkit</name>
-  <version>1.1</version>
-  <vendor email="chad.dinh@synergixtech.com" url="https://github.com/dinhtienloc/synergix-intellij-plugin">Dinh Tien Loc</vendor>
+  <name>Synergix Awesome</name>
+  <version>1.0</version>
+  <vendor email="dinhtienloc1996@gmail.com" url="https://github.com/dinhtienloc/synergix-intellij-plugin">Dinh Tien Loc</vendor>
 
   <description><![CDATA[
-      This plugin provides a few utilities to help developers code faster at Synergix:
-      <ul>
-      <li>Code completion for some SynComponent's attributes: <em>labelKey</em>, <em>numberType</em>, <em>data-type</em>...</li>
-      <li>Support create XML Entity File.</li>
-      <li>Live Templates: auto generating code for common columns in XML Entity File.</li>
-      </ul><br>
+      This plugin provides a bunch of utilities to help developers code faster with Synergix Framework.
     ]]></description>
 
   <!--<change-notes><![CDATA[-->
@@ -29,7 +24,6 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <configurationType implementation="synergix.plugin.intellj.execution.configuration.SyncDbRunConfigurationType"/>
-    <!--<programRunner implementation="synergix.plugin.intellj.runner.SyncDbRunner"/>-->
 
     <psi.referenceContributor implementation="synergix.plugin.intellj.SynReferenceContributor"/>
     <completion.contributor language="XML" implementationClass="synergix.plugin.intellj.SynCompletionContributor"/>
