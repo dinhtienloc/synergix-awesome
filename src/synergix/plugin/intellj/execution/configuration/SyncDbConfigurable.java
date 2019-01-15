@@ -8,6 +8,7 @@ import com.intellij.openapi.ui.ComponentWithBrowseButton;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.PanelWithAnchor;
+import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.components.JBLabel;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -17,8 +18,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Properties;
 
 public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> implements PanelWithAnchor {
     private SyncDbConfiguration syncDbConfiguration;
@@ -41,26 +44,35 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
     private LabeledComponent<JTextField> mySchemaOption;
     private JPanel mySyncActionPanel;
     private JPanel myDbListPanel;
+    private JPanel mySvnPanel;
+    private LabeledComponent<JTextField> mySvnUser;
+    private LabeledComponent<JTextField> mySvnPass;
+    private JPanel myIamHackerPanel;
+    private JCheckBox myIamHackerCheckbox;
+
+    private LabeledComponent<RawCommandLineEditor> settingOption;
 
     private JPanel dbNamesOption;
 
     public SyncDbConfigurable(final Project project) {
         this.myProject = project;
-        mySuperModelDistDirectoryLabel.setLabelFor(mySuperModelDistDirectory.getTextField());
-        mySuperModelStableDirectoryLabel.setLabelFor(mySuperModelStableDirectory.getTextField());
+        this.mySuperModelDistDirectoryLabel.setLabelFor(this.mySuperModelDistDirectory.getTextField());
+        this.mySuperModelStableDirectoryLabel.setLabelFor(this.mySuperModelStableDirectory.getTextField());
 
-        mySuperModelDistDirectory.addBrowseFolderListener("Choose Super Model's Dist Directory", null, null,
+        this.mySuperModelDistDirectory.addBrowseFolderListener("Choose Super Model's Dist Directory", null, null,
                 FileChooserDescriptorFactory.createSingleFolderDescriptor());
 
-        mySuperModelStableDirectory.addBrowseFolderListener("Choose Super Model's Stable Directory", null, null,
+        this.mySuperModelStableDirectory.addBrowseFolderListener("Choose Super Model's Stable Directory", null, null,
                 FileChooserDescriptorFactory.createSingleFolderDescriptor());
 
-        myCommandOption.getComponent().setText("sync");
-        mySchemaOption.getComponent().setText("modmain");
-        mySuperModelDistDirectory.getTextField().getDocument().addDocumentListener(new DocumentListener() {
+        this.myCommandOption.getComponent().setText("sync");
+        this.mySchemaOption.getComponent().setText("modmain");
+        this.myIamHackerCheckbox.setSelected(true);
+
+        this.mySuperModelDistDirectory.getTextField().getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                updateStableDirectory();
+                SyncDbConfigurable.this.updateStableDirectory();
             }
 
             @Override
@@ -69,14 +81,14 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                updateStableDirectory();
+                SyncDbConfigurable.this.updateStableDirectory();
             }
         });
 
-        mySuperModelStableDirectory.getTextField().getDocument().addDocumentListener(new DocumentListener() {
+        this.mySuperModelStableDirectory.getTextField().getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                updateDistDirectory();
+                SyncDbConfigurable.this.updateDistDirectory();
             }
 
             @Override
@@ -85,7 +97,7 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                updateDistDirectory();
+                SyncDbConfigurable.this.updateDistDirectory();
             }
         });
     }
@@ -93,21 +105,25 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
     @Override
     protected void resetEditorFrom(@NotNull SyncDbConfiguration s) {
         this.syncDbConfiguration = s;
-        this.mySuperModelDistDirectory.setText(s.getSuperModelDistDirectory());
-        this.mySuperModelStableDirectory.setText(s.getSuperModelStableDirectory());
         this.myCommandOption.getComponent().setText(s.getDbCommand());
         this.mySchemaOption.getComponent().setText(s.getDbSchema());
         this.myDbListLabeledComponent.getComponent().setText(String.join(",", s.getDbNames().toArray(new String[s.getDbNames().size()])));
+        this.mySuperModelDistDirectory.setText(s.getSuperModelDistDirectory());
+        this.mySuperModelStableDirectory.setText(s.getSuperModelStableDirectory());
+
     }
 
     @Override
     protected void applyEditorTo(@NotNull SyncDbConfiguration s) throws ConfigurationException {
-        s.setSuperModelDistDirectory(mySuperModelDistDirectory.getText());
-        s.setSuperModelStableDirectory(mySuperModelStableDirectory.getText());
-        s.setDbCommand(myCommandOption.getComponent().getText());
-        s.setDbSchema(mySchemaOption.getComponent().getText());
+        s.setSuperModelDistDirectory(this.mySuperModelDistDirectory.getText());
+        s.setSuperModelStableDirectory(this.mySuperModelStableDirectory.getText());
+        s.setDbCommand(this.myCommandOption.getComponent().getText());
+        s.setDbSchema(this.mySchemaOption.getComponent().getText());
+        s.setSvnUser(this.mySvnUser.getComponent().getText());
+        s.setSvnPass(this.mySvnPass.getComponent().getText());
+        s.setiAmHacker(this.myIamHackerCheckbox.isSelected());
 
-        String dbListText = myDbListLabeledComponent.getComponent().getText();
+        String dbListText = this.myDbListLabeledComponent.getComponent().getText();
         if (!StringUtils.isEmpty(dbListText)) {
             s.setDbNames(Arrays.asList(dbListText.split(",")));
         }
@@ -116,7 +132,7 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
     @NotNull
     @Override
     protected JComponent createEditor() {
-        return myWholePanel;
+        return this.myWholePanel;
     }
 
     @Override
@@ -132,18 +148,35 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
     }
 
     private void updateStableDirectory() {
-        if (StringUtils.isEmpty(mySuperModelStableDirectory.getText())) {
-            String distPath = mySuperModelDistDirectory.getText();
+        if (StringUtils.isEmpty(this.mySuperModelStableDirectory.getText())) {
+            String distPath = this.mySuperModelDistDirectory.getText();
             int index = FilenameUtils.indexOfLastSeparator(distPath);
-            mySuperModelStableDirectory.setText(distPath.substring(0, index + 1) + "stable");
+            String stableDirectory = distPath.substring(0, index + 1) + "stable";
+            this.mySuperModelStableDirectory.setText(stableDirectory);
+//            String settingStr = SynUtil.readFile(stableDirectory + File.separator + "settings.ini");
+            try (FileInputStream inputStream = new FileInputStream(stableDirectory + File.separator + "settings.ini")) {
+                Properties prop = new Properties();
+                prop.load(inputStream);
+                this.mySvnUser.getComponent().setText(prop.getProperty("svn.user"));
+                this.mySvnPass.getComponent().setText(prop.getProperty("svn.pass"));
+                this.myIamHackerCheckbox.setSelected("Y".equals(prop.getProperty("iamahacker")) ? true : false);
+//                this.settingOption.setText(settingStr);
+            } catch (Exception e) {
+                return;
+            }
+
         }
     }
 
     private void updateDistDirectory() {
-        if (StringUtils.isEmpty(mySuperModelDistDirectory.getText())) {
-            String stablePath = mySuperModelStableDirectory.getText();
+        if (StringUtils.isEmpty(this.mySuperModelDistDirectory.getText())) {
+            String stablePath = this.mySuperModelStableDirectory.getText();
             int index = FilenameUtils.indexOfLastSeparator(stablePath);
-            mySuperModelDistDirectory.setText(stablePath.substring(0, index + 1) + "dist");
+            this.mySuperModelDistDirectory.setText(stablePath.substring(0, index + 1) + "dist");
         }
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

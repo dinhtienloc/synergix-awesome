@@ -2,6 +2,7 @@ package synergix.plugin.intellj;
 
 import com.intellij.codeInsight.completion.*;
 import com.intellij.patterns.PlatformPatterns;
+import com.intellij.psi.jsp.ELElementType;
 import com.intellij.psi.xml.XmlElementType;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
@@ -11,18 +12,19 @@ import synergix.plugin.intellj.utils.SynUtil;
 
 public class SynCompletionContributor extends CompletionContributor {
     public SynCompletionContributor() {
-        extend(CompletionType.BASIC,
+        this.extend(CompletionType.BASIC,
                 PlatformPatterns.psiElement(XmlElementType.XML_ATTRIBUTE_VALUE_TOKEN), new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        SynCompletion completion = getCompletion(parameters);
+                        SynCompletion completion = SynCompletionContributor.this.getCompletion(parameters);
                         resultSet.addAllElements(completion.createLookupElementList());
                     }
                 }
         );
-        extend(CompletionType.BASIC,
-                PlatformPatterns.psiElement(XmlElementType.XML_ATTRIBUTE), new CompletionProvider<CompletionParameters>() {
+
+        this.extend(CompletionType.BASIC,
+                PlatformPatterns.psiElement(XmlElementType.XML_ATTRIBUTE_DECL), new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {

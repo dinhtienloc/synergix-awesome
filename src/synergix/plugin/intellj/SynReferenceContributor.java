@@ -45,7 +45,7 @@ public class SynReferenceContributor extends PsiReferenceContributor {
 //                StandardPatterns.instanceOf(PsiLiteral.class),
 //                pathLookupReferenceProvider);
 
-//        registrar.registerReferenceProvider(XmlPatterns.xmlTag(), new PsiReferenceProvider() {
+//        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue(), new PsiReferenceProvider() {
 //            @NotNull
 //            public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
 //                return new PsiReference[]{new OneWayPsiFileFromXmlTagReference((XmlTag)element)};

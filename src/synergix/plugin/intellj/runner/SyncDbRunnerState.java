@@ -3,25 +3,24 @@ package synergix.plugin.intellj.runner;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.filters.TextConsoleBuilderFactory;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessHandler;
-import com.intellij.execution.process.ProcessHandlerFactory;
-import com.intellij.execution.process.ProcessTerminatedListener;
+import com.intellij.execution.process.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.ui.ConsoleView;
-import com.intellij.execution.ui.ConsoleViewContentType;
-import com.sun.javafx.binding.StringFormatter;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Key;
 import com.yourkit.util.Strings;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.cmdline.LogSetup;
 import synergix.plugin.intellj.execution.configuration.SyncDbConfiguration;
-import synergix.plugin.intellj.utils.RunnerUtil;
+import synergix.plugin.intellj.utils.SyncDbRunnerUtil;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class SyncDbRunnerState extends CommandLineState {
     private SyncDbConfiguration syncDbConfiguration;
@@ -39,58 +38,96 @@ public class SyncDbRunnerState extends CommandLineState {
         List<String> bodies = new ArrayList<>();
         List<String> errorMsgs = new ArrayList<>();
 
+        Project project = this.syncDbConfiguration.getProject();
         if (this.syncDbConfiguration.getDbNames().isEmpty()) {
-            errorMsgs.add("echo [Synergix] Sync Error: There is no database to sync.");
+            errorMsgs.add("There is no database to sync.");
         }
-        else if (this.syncDbConfiguration.getDbCommand().isEmpty()) {
-            errorMsgs.add("echo [Synergix] Sync Error: There is no command action.");
+        if (StringUtils.isEmpty(this.syncDbConfiguration.getDbCommand())) {
+            errorMsgs.add("There is no command action.");
         }
-        else if (this.syncDbConfiguration.getDbSchema().isEmpty()) {
-            errorMsgs.add("echo [Synergix] Sync Error: There is no schema to sync.");
+        if (StringUtils.isEmpty(this.syncDbConfiguration.getDbSchema())) {
+            errorMsgs.add("There is no schema to sync.");
         }
-        else {
-            if (RunnerUtil.createNonGUIExportSchemeBat(supermodelStableDir)) {
-                bodies.add(RunnerUtil.NON_GUI_EXPORT_SCHEMA_FILE_NAME);
-                bodies.add("echo Export schema successful");
-                bodies.add("cd " + this.syncDbConfiguration.getSuperModelDistDirectory());
+        Properties props = this.createSettingProperties();
+        String settingFilePath = this.syncDbConfiguration.getSuperModelStableDirectory() + File.separator + "settings.ini";
+        SyncDbRunnerUtil.extractPropertiesToFile(props, settingFilePath);
 
-                String command = this.syncDbConfiguration.getDbCommand();
-                String schema = this.syncDbConfiguration.getDbSchema();
-                String syncTemplale = "(echo %s & echo. & java -jar SuperModel.jar --" + command + " --schema=" + schema + ".xml --db=%s --includeViews)";
-                for (String db : this.syncDbConfiguration.getDbNames()) {
-                    bodies.add(String.format(syncTemplale, db, db));
-                }
+        if (SyncDbRunnerUtil.createNonGUIExportSchemeBat(supermodelStableDir)) {
+            bodies.add(SyncDbRunnerUtil.NON_GUI_EXPORT_SCHEMA_FILE_NAME);
+            bodies.add("cd " + this.syncDbConfiguration.getSuperModelDistDirectory());
+            String command = this.syncDbConfiguration.getDbCommand();
+            String schema = this.syncDbConfiguration.getDbSchema();
+            String syncTemplale = "(echo %s & echo. & java -jar SuperModel.jar --" + command + " --schema=" + schema + ".xml --db=%s --includeViews)";
+            for (String db : this.syncDbConfiguration.getDbNames()) {
+                bodies.add(String.format(syncTemplale, db, db));
             }
         }
 
-        if (errorMsgs.isEmpty() && bodies.isEmpty()) {
-            errorMsgs.add("echo [Synergix] Sync Error: Something is wrong. Can not sync!");
-        }
-        if (!errorMsgs.isEmpty())
-            cmds.add(this.parseToCommand(errorMsgs));
-        else
-            cmds.add(this.parseToCommand(bodies));
-
         GeneralCommandLine generalCommandLine = new GeneralCommandLine(cmds);
-        generalCommandLine.setCharset(Charset.forName("UTF-8"));
-        generalCommandLine.setWorkDirectory(supermodelStableDir);
 
-//        LogSetup.initLoggers();
+        if (!errorMsgs.isEmpty()) {
+            String errorContent = String.join("<br/>", errorMsgs);
+            new SyncDbErrorNotification(errorContent, NotificationType.ERROR).notify(project);
+        } else {
+            generalCommandLine.addParameters(this.parseToCommand(bodies));
+            generalCommandLine.setCharset(Charset.forName("UTF-8"));
+            generalCommandLine.setWorkDirectory(supermodelStableDir);
+        }
+
         ProcessHandlerFactory factory = ProcessHandlerFactory.getInstance();
         OSProcessHandler processHandler = factory.createColoredProcessHandler(generalCommandLine);
-        ConsoleView console = TextConsoleBuilderFactory.getInstance()
-                .createBuilder(this.syncDbConfiguration.getProject()).getConsole();
-        console.attachToProcess(processHandler);
-//        if (!errorMsgs.isEmpty()) {
-//            String errorMessage = String.join("\n", errorMsgs.toArray(new String[errorMsgs.size()]));
-//            console.print(errorMessage, ConsoleViewContentType.ERROR_OUTPUT);
-//        }
+        processHandler.addProcessListener(new ProcessListener() {
+            @Override
+            public void startNotified(@NotNull ProcessEvent event) {
+            }
+
+            @Override
+            public void processTerminated(@NotNull ProcessEvent event) {
+            }
+
+            @Override
+            public void processWillTerminate(@NotNull ProcessEvent event, boolean willBeDestroyed) {
+            }
+
+            @Override
+            public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
+                String textLine = event.getText();
+                if (textLine.contains("Has errors while reading schema")) {
+                    event.getProcessHandler().destroyProcess();
+                }
+            }
+        });
         ProcessTerminatedListener.attach(processHandler);
         return processHandler;
+    }
+
+    private Properties createSettingProperties() {
+        Properties prop = new Properties();
+        prop.setProperty("isTesting", "N");
+        prop.setProperty("postExportCommand", "");
+        prop.setProperty("outputPath", this.syncDbConfiguration.getSuperModelDistDirectory());
+        prop.setProperty("svn.user", this.syncDbConfiguration.getSvnUser());
+        prop.setProperty("schemaPath", this.syncDbConfiguration.getProject().getBasePath() + File.separator
+                + String.join(File.separator, "TH6/src/main/resources/synergix/th6/data/meta".split("/")));
+        prop.setProperty("mainschemadir", "schema");
+        prop.setProperty("se", "Y");
+        prop.setProperty("kdiff3Path", this.syncDbConfiguration.getSuperModelStableDirectory() + File.separator
+                + "Kdiff" + File.separator + "kdiff3.exe");
+        prop.setProperty("iamahacker", this.syncDbConfiguration.isiAmHacker() ? "Y" : "N");
+        prop.setProperty("trunkPath", "https://svn.synergixtech.com/svn/TH6/trunk");
+        prop.setProperty("svn.pass", this.syncDbConfiguration.getSvnPass());
+        prop.setProperty("ctrlschemadir", "ctrlschema");
+        return prop;
     }
 
     private String parseToCommand(List<String> msg) {
         return Strings.join("", msg.toArray(new String[msg.size()]), " && ", false);
 
+    }
+
+    private class SyncDbErrorNotification extends Notification {
+        SyncDbErrorNotification(@NotNull String content, @NotNull NotificationType type) {
+            super("Synergix Error", "Sync DB Error", content, type);
+        }
     }
 }

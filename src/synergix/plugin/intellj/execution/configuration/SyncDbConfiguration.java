@@ -18,6 +18,9 @@ public class SyncDbConfiguration extends RunConfigurationBase {
     private String superModelStableDirectory;
     private String dbCommand;
     private String dbSchema;
+    private String svnUser;
+    private String svnPass;
+    private boolean iAmHacker;
     private List<String> dbNames;
 
     public SyncDbConfiguration(Project project, ConfigurationFactory factory, String name) {
@@ -28,7 +31,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
     @NotNull
     @Override
     public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
-        return new SyncDbConfigurable(getProject());
+        return new SyncDbConfigurable(this.getProject());
     }
 
     @Override
@@ -42,7 +45,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
     }
 
     public String getSuperModelDistDirectory() {
-        return superModelDistDirectory;
+        return this.superModelDistDirectory;
     }
 
     public void setSuperModelDistDirectory(String superModelDistDirectory) {
@@ -50,7 +53,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
     }
 
     public String getSuperModelStableDirectory() {
-        return superModelStableDirectory;
+        return this.superModelStableDirectory;
     }
 
     public void setSuperModelStableDirectory(String superModelStableDirectory) {
@@ -58,7 +61,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
     }
 
     public String getDbCommand() {
-        return dbCommand;
+        return this.dbCommand;
     }
 
     public void setDbCommand(String dbCommand) {
@@ -66,7 +69,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
     }
 
     public String getDbSchema() {
-        return dbSchema;
+        return this.dbSchema;
     }
 
     public void setDbSchema(String dbSchema) {
@@ -74,10 +77,34 @@ public class SyncDbConfiguration extends RunConfigurationBase {
     }
 
     public List<String> getDbNames() {
-        return dbNames;
+        return this.dbNames;
     }
 
     public void setDbNames(List<String> dbNames) {
         this.dbNames = dbNames;
+    }
+
+    public String getSvnUser() {
+        return this.svnUser;
+    }
+
+    public void setSvnUser(String svnUser) {
+        this.svnUser = svnUser;
+    }
+
+    public String getSvnPass() {
+        return this.svnPass;
+    }
+
+    public void setSvnPass(String svnPass) {
+        this.svnPass = svnPass;
+    }
+
+    public boolean isiAmHacker() {
+        return this.iAmHacker;
+    }
+
+    public void setiAmHacker(boolean iAmHacker) {
+        this.iAmHacker = iAmHacker;
     }
 }

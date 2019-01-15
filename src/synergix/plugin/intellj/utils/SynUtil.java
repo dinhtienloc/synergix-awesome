@@ -11,8 +11,15 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlElement;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlToken;
+import org.apache.commons.io.IOUtils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
+
+import static org.apache.commons.compress.utils.Charsets.UTF_8;
 
 public class SynUtil {
     public static String getClosestAttributeName(CompletionParameters parameters) {
@@ -59,5 +66,15 @@ public class SynUtil {
     public static Module getModuleByName(Project project, String moduleName) {
         Module[] modules = ModuleManager.getInstance(project).getModules();
         return Arrays.stream(modules).filter(m -> moduleName.equals(m.getName())).findFirst().orElse(null);
+    }
+
+    public static String readFile(String fileName) {
+        try(FileInputStream inputStream = new FileInputStream("foo.txt")) {
+            return IOUtils.toString(inputStream, UTF_8);
+            // do something with everything string
+        }
+        catch (IOException e) {
+            return null;
+        }
     }
 }

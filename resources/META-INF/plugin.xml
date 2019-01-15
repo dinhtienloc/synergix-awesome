@@ -1,48 +1,64 @@
 <idea-plugin>
-  <id>synergix.plugin.intellj</id>
-  <name>Synergix Awesome</name>
-  <version>1.0</version>
-  <vendor email="dinhtienloc1996@gmail.com" url="https://github.com/dinhtienloc/synergix-intellij-plugin">Dinh Tien Loc</vendor>
+    <id>synergix.plugin.intellj</id>
+    <name>Synergix Awesome</name>
+    <version>1.2</version>
+    <vendor email="dinhtienloc1996@gmail.com" url="https://github.com/synergix-tech/synergix-intellij-plugin">Dinh Tien
+        Loc
+    </vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       This plugin provides a bunch of utilities to help developers code faster with Synergix Framework.
     ]]></description>
 
-  <!--<change-notes><![CDATA[-->
-      <!--Add change notes here.<br>-->
-      <!--<em>most HTML tags may be used</em>-->
-    <!--]]>-->
-  <!--</change-notes>-->
+    <change-notes><![CDATA[
+      <ul>1.2
+        <li>Include all properties from settings.ini in Sync DB Configuration.</li>
+      </ul>
+      <ul>1.1
+        <li>Fix Sync DB don't stop when extracting tables get errors.</li>
+        <li>Using internal setting properties instead of external settings.ini file.</li>
+        <li>More compatible with older idea version.</li>
+      </ul>
+      <ul>1.0
+        <li>Code completion for some SynComponent's attributes: <b>labelKey</b>, <b>numberType</b>, <b>data-type</b>...</li>
+        <li>Support create XML Entity File.</li>
+        <li>Live Templates: auto generating code for common columns in XML Entity File.</li>
+        <li>String literal navigator everywhere.</li>
+        <li>Create Sync DB Run Configuration, allow run Sync DB command line from IDE.</li>
+      </ul>
+    ]]>
+    </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="173.0"/>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="120.0"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products -->
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products -->
 
 
-  <extensions defaultExtensionNs="com.intellij">
-    <configurationType implementation="synergix.plugin.intellj.execution.configuration.SyncDbRunConfigurationType"/>
+    <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="synergix.plugin.intellj.execution.configuration.SyncDbRunConfigurationType"/>
 
-    <psi.referenceContributor implementation="synergix.plugin.intellj.SynReferenceContributor"/>
-    <completion.contributor language="XML" implementationClass="synergix.plugin.intellj.SynCompletionContributor"/>
+        <psi.referenceContributor implementation="synergix.plugin.intellj.SynReferenceContributor"/>
+        <completion.contributor language="XML" implementationClass="synergix.plugin.intellj.SynCompletionContributor"/>
 
-    <defaultLiveTemplatesProvider implementation="synergix.plugin.intellj.templates.provider.SynergixTemplateProvider"/>
-    <liveTemplateContext implementation="synergix.plugin.intellj.templates.context.SynergixContextType"/>
+        <defaultLiveTemplatesProvider
+                implementation="synergix.plugin.intellj.templates.provider.SynergixTemplateProvider"/>
+        <liveTemplateContext implementation="synergix.plugin.intellj.templates.context.SynergixContextType"/>
 
-    <!--Templates-->
-    <internalFileTemplate name="XML Entity" />
-  </extensions>
+        <!--Templates-->
+        <internalFileTemplate name="XML Entity"/>
+    </extensions>
 
-  <actions>
-    <!-- Add your actions here -->
-    <action id="Synergix.CreateXMLEntityFile"
-            class="synergix.plugin.intellj.actions.CreateXmlEntityFile">
-      <add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
+    <actions>
+        <!-- Add your actions here -->
+        <action id="Synergix.CreateXMLEntityFile"
+                class="synergix.plugin.intellj.actions.CreateXmlEntityFile">
+            <add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
 
-    </action>
-  </actions>
+        </action>
+    </actions>
 
 
 </idea-plugin>
