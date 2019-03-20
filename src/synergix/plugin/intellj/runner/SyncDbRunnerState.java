@@ -9,7 +9,6 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
-import com.yourkit.util.Strings;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import synergix.plugin.intellj.execution.configuration.SyncDbConfiguration;
@@ -121,8 +120,7 @@ public class SyncDbRunnerState extends CommandLineState {
     }
 
     private String parseToCommand(List<String> msg) {
-        return Strings.join("", msg.toArray(new String[msg.size()]), " && ", false);
-
+        return StringUtils.join(msg, " && ");
     }
 
     private class SyncDbErrorNotification extends Notification {
