@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>synergix.plugin.intellj</id>
     <name>Synergix Awesome</name>
-    <version>1.2</version>
+    <version>1.3</version>
     <vendor email="dinhtienloc1996@gmail.com" url="https://github.com/synergix-tech/synergix-intellij-plugin">Dinh Tien
         Loc
     </vendor>
@@ -11,6 +11,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <ul>1.3
+        <li>Fix Sync DB can't store after closing IDE.</li>
+        <li>Move the IDE compatibility version to 162.</li>
+        <li>Refactor the code.</li>
+      </ul>
       <ul>1.2
         <li>Include all properties from settings.ini in Sync DB Configuration.</li>
         <li>Fix Sync DB can't store after closing IDE.</li>
