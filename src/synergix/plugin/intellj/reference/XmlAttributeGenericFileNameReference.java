@@ -12,7 +12,7 @@ public class XmlAttributeGenericFileNameReference extends GenericFileNameReferen
     @NotNull
     @Override
     protected String computeStringValue() {
-        return getElement().getValue();
+        return this.getElement().getValue();
     }
 
 }

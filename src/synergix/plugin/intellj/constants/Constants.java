@@ -1,7 +1,8 @@
 package synergix.plugin.intellj.constants;
 
 public class Constants {
-	public static String INTELLIJ_CURSOR_SYMBOL = "IntellijIdeaRulezzz ";
+	public final static String INTELLIJ_CURSOR_SYMBOL = "IntellijIdeaRulezzz ";
+	public final static String PLUGIN_NAME = "SynergixAwesome";
 
 	public static class XmlAttribute {
 		public final static String NUMBER_TYPE = "numberType";

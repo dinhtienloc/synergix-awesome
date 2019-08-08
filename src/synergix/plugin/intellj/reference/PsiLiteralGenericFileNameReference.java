@@ -13,7 +13,7 @@ public class PsiLiteralGenericFileNameReference extends GenericFileNameReference
     protected String computeStringValue() {
         String computedStringValue = "";
 
-        Object value = getElement().getValue();
+        Object value = this.getElement().getValue();
         if (value instanceof String) {
             computedStringValue = (String) value;
         }

@@ -38,7 +38,7 @@ public class SyncDbRunnerState extends CommandLineState {
         List<String> errorMsgs = new ArrayList<>();
 
         Project project = this.syncDbConfiguration.getProject();
-        if (this.syncDbConfiguration.getDbNames().isEmpty()) {
+        if (this.syncDbConfiguration.getDbList().isEmpty()) {
             errorMsgs.add("There is no database to sync.");
         }
         if (StringUtils.isEmpty(this.syncDbConfiguration.getDbCommand())) {
@@ -57,7 +57,7 @@ public class SyncDbRunnerState extends CommandLineState {
             String command = this.syncDbConfiguration.getDbCommand();
             String schema = this.syncDbConfiguration.getDbSchema();
             String syncTemplale = "(echo %s & echo. & java -jar SuperModel.jar --" + command + " --schema=" + schema + ".xml --db=%s --includeViews)";
-            for (String db : this.syncDbConfiguration.getDbNames()) {
+            for (String db : this.syncDbConfiguration.getDbList().split(",")) {
                 bodies.add(String.format(syncTemplale, db, db));
             }
         }

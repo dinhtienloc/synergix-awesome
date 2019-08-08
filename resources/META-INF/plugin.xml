@@ -13,6 +13,7 @@
     <change-notes><![CDATA[
       <ul>1.2
         <li>Include all properties from settings.ini in Sync DB Configuration.</li>
+        <li>Fix Sync DB can't store after closing IDE.</li>
       </ul>
       <ul>1.1
         <li>Fix Sync DB don't stop when extracting tables get errors.</li>
@@ -30,7 +31,7 @@
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="120.0"/>
+    <idea-version since-build="162"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->

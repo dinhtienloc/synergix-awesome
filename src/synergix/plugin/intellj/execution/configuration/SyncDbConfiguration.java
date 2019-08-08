@@ -1,110 +1,120 @@
 package synergix.plugin.intellj.execution.configuration;
 
+import com.intellij.configurationStore.XmlSerializer;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
-import com.intellij.execution.configurations.*;
+import com.intellij.execution.configurations.ConfigurationFactory;
+import com.intellij.execution.configurations.RunConfiguration;
+import com.intellij.execution.configurations.RunConfigurationBase;
+import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.InvalidDataException;
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import synergix.plugin.intellj.runner.SyncDbRunnerState;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SyncDbConfiguration extends RunConfigurationBase {
-    private String superModelDistDirectory;
-    private String superModelStableDirectory;
-    private String dbCommand;
-    private String dbSchema;
-    private String svnUser;
-    private String svnPass;
-    private boolean iAmHacker;
-    private List<String> dbNames;
 
-    public SyncDbConfiguration(Project project, ConfigurationFactory factory, String name) {
-        super(project, factory, name);
-        this.dbNames = new ArrayList<>();
-    }
+	private SyncDbConfigurationOptions syncDbOptions;
 
-    @NotNull
-    @Override
-    public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
-        return new SyncDbConfigurable(this.getProject());
-    }
+	public SyncDbConfiguration(Project project, ConfigurationFactory factory, String name) {
+		super(project, factory, name);
+	}
 
-    @Override
-    public void checkConfiguration() throws RuntimeConfigurationException {
-    }
+	public SyncDbConfigurationOptions getSyncDbOptions() {
+		return this.syncDbOptions;
+	}
 
-    @Nullable
-    @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
-        return new SyncDbRunnerState(environment, this);
-    }
+	@NotNull
+	@Override
+	public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
+		return new SyncDbConfigurable(this.getProject());
+	}
 
-    public String getSuperModelDistDirectory() {
-        return this.superModelDistDirectory;
-    }
+	@Override
+	public void checkConfiguration() {
+	}
 
-    public void setSuperModelDistDirectory(String superModelDistDirectory) {
-        this.superModelDistDirectory = superModelDistDirectory;
-    }
+	@Override
+	public void readExternal(@NotNull Element element) throws InvalidDataException {
+		this.syncDbOptions = XmlSerializer.deserialize(element, SyncDbConfigurationOptions.class);
+	}
 
-    public String getSuperModelStableDirectory() {
-        return this.superModelStableDirectory;
-    }
+	@Override
+	public void writeExternal(@NotNull Element element) {
+		XmlSerializer.serializeObjectInto(this.syncDbOptions, element);
+	}
 
-    public void setSuperModelStableDirectory(String superModelStableDirectory) {
-        this.superModelStableDirectory = superModelStableDirectory;
-    }
+	@Nullable
+	@Override
+	public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
+		return new SyncDbRunnerState(environment, this);
+	}
 
-    public String getDbCommand() {
-        return this.dbCommand;
-    }
+	public String getSuperModelDistDirectory() {
+		return this.syncDbOptions.superModelDistDirectory;
+	}
 
-    public void setDbCommand(String dbCommand) {
-        this.dbCommand = dbCommand;
-    }
+	public void setSuperModelDistDirectory(String superModelDistDirectory) {
+		this.syncDbOptions.superModelDistDirectory = superModelDistDirectory;
+	}
 
-    public String getDbSchema() {
-        return this.dbSchema;
-    }
+	public String getSuperModelStableDirectory() {
+		return this.syncDbOptions.superModelStableDirectory;
+	}
 
-    public void setDbSchema(String dbSchema) {
-        this.dbSchema = dbSchema;
-    }
+	public void setSuperModelStableDirectory(String superModelStableDirectory) {
+		this.syncDbOptions.superModelStableDirectory = superModelStableDirectory;
+	}
 
-    public List<String> getDbNames() {
-        return this.dbNames;
-    }
+	public String getDbCommand() {
+		return this.syncDbOptions.dbCommand;
+	}
 
-    public void setDbNames(List<String> dbNames) {
-        this.dbNames = dbNames;
-    }
+	public void setDbCommand(String dbCommand) {
+		this.syncDbOptions.dbCommand = dbCommand;
+	}
 
-    public String getSvnUser() {
-        return this.svnUser;
-    }
+	public String getDbSchema() {
+		return this.syncDbOptions.dbSchema;
+	}
 
-    public void setSvnUser(String svnUser) {
-        this.svnUser = svnUser;
-    }
+	public void setDbSchema(String dbSchema) {
+		this.syncDbOptions.dbSchema = dbSchema;
+	}
 
-    public String getSvnPass() {
-        return this.svnPass;
-    }
+	public String getSvnUser() {
+		return this.syncDbOptions.svnUser;
+	}
 
-    public void setSvnPass(String svnPass) {
-        this.svnPass = svnPass;
-    }
+	public void setSvnUser(String svnUser) {
+		this.syncDbOptions.svnUser = svnUser;
+	}
 
-    public boolean isiAmHacker() {
-        return this.iAmHacker;
-    }
+	public String getSvnPass() {
+		return this.syncDbOptions.svnPass;
+	}
 
-    public void setiAmHacker(boolean iAmHacker) {
-        this.iAmHacker = iAmHacker;
-    }
+	public void setSvnPass(String svnPass) {
+		this.syncDbOptions.svnPass = svnPass;
+	}
+
+	public boolean isiAmHacker() {
+		return this.syncDbOptions.iAmHacker;
+	}
+
+	public void setiAmHacker(boolean iAmHacker) {
+		this.syncDbOptions.iAmHacker = iAmHacker;
+	}
+
+	public String getDbList() {
+		return this.syncDbOptions.dbList;
+	}
+
+	public void setDbList(String dbList) {
+		this.syncDbOptions.dbList = dbList;
+	}
 }
