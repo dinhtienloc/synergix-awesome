@@ -3,6 +3,8 @@ package synergix.plugin.intellj.utils;
 import java.util.Arrays;
 
 import com.intellij.codeInsight.completion.CompletionParameters;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
@@ -60,5 +62,9 @@ public class SynUtil {
 	public static Module getModuleByName(Project project, String moduleName) {
 		Module[] modules = ModuleManager.getInstance(project).getModules();
 		return Arrays.stream(modules).filter(m -> moduleName.equals(m.getName())).findFirst().orElse(null);
+	}
+
+	public static boolean hasTH6Project(DataContext context) {
+		return CommonDataKeys.PROJECT.getData(context) != null;
 	}
 }

@@ -55,6 +55,8 @@
 
         <!--Templates-->
         <internalFileTemplate name="XML Entity"/>
+
+        <toolWindow id="Synergix Screens" icon="/synlogo.png" anchor="right" factoryClass="synergix.plugin.intellj.wm.SynergixScreenWindowFactory"/>
     </extensions>
 
     <actions>
@@ -62,8 +64,15 @@
         <action id="Synergix.CreateXMLEntityFile"
                 class="synergix.plugin.intellj.actions.CreateXmlEntityFile">
             <add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
-
         </action>
+        <action id="Synergix.ReloadScreen" class="synergix.plugin.intellj.actions.ScreenReloadAction"
+                text="Reimport All Synergix Screens"
+                icon="AllIcons.Actions.Refresh">
+        </action>
+
+        <group id="Synergix.ScreenNavigtorToolbar">
+            <reference id="Synergix.ReloadScreen"/>
+        </group>
     </actions>
 
 
