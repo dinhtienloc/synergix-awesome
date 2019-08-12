@@ -8,9 +8,7 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.util.ArrayUtilRt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import synergix.plugin.intellj.structure.descriptor.ModuleNodeDescriptor;
-import synergix.plugin.intellj.structure.descriptor.ProjectNodeDescriptor;
-import synergix.plugin.intellj.structure.node.ModuleNode;
+import synergix.plugin.intellj.structure.descriptor.SynergixNodeDescriptor;
 import synergix.plugin.intellj.structure.node.ProjectNode;
 import synergix.plugin.intellj.structure.node.SynergixTreeNode;
 
@@ -18,14 +16,12 @@ public class SynergixScreensStructure extends AbstractTreeStructure {
 	private static final Logger LOG = Logger.getInstance(SynergixScreensStructure.class);
 
 	private final Project myProject;
-	private final ProjectNode myRoot;
+	private SynergixTreeNode myRoot;
 
-	private SynergixScreensBuilder myBuilder;
 
 	public SynergixScreensStructure(Project project, SynergixScreensBuilder builder) {
 		this.myProject = project;
-		this.myBuilder = builder;
-		this.myRoot = builder.getRootNode();
+		this.myRoot = builder != null ? builder.getRootNode() : null;
 	}
 
 	@NotNull
@@ -52,12 +48,20 @@ public class SynergixScreensStructure extends AbstractTreeStructure {
 	@NotNull
 	@Override
 	public NodeDescriptor createDescriptor(@NotNull Object element, @Nullable NodeDescriptor parentDescriptor) {
-		if (element == this.myRoot) {
-			return new ProjectNodeDescriptor(this.myProject, parentDescriptor, (ProjectNode) element);
-		}
+//		if (element == this.myRoot) {
+//			return new ProjectNodeDescriptor(this.myProject, parentDescriptor, (ProjectNode) element);
+//		}
+//
+//		if (element instanceof MenuGroupNode) {
+//			return new MenuGroupDescriptor(this.myProject, parentDescriptor, (MenuGroupNode) element);
+//		}
+//		if (element instanceof ModuleNode) {
+//			return new ModuleNodeDescriptor(this.myProject, parentDescriptor, (ModuleNode) element);
+//		}
 
-		if (element instanceof ModuleNode) {
-			return new ModuleNodeDescriptor(this.myProject, parentDescriptor, (ModuleNode) element);
+
+		if (element instanceof SynergixTreeNode) {
+			return new SynergixNodeDescriptor(this.myProject, parentDescriptor, (SynergixTreeNode) element);
 		}
 
 		LOG.error("Unknown element for this tree structure " + element);

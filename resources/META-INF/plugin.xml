@@ -55,8 +55,10 @@
 
         <!--Templates-->
         <internalFileTemplate name="XML Entity"/>
+        <toolWindow id="Synergix Screen" icon="/synlogo.png" anchor="right" factoryClass="synergix.plugin.intellj.wm.SynergixScreenWindowFactory" canCloseContents="true"/>
 
-        <toolWindow id="Synergix Screens" icon="/synlogo.png" anchor="right" factoryClass="synergix.plugin.intellj.wm.SynergixScreenWindowFactory"/>
+        <dom.fileMetaData implementation="synergix.plugin.intellj.dom.descriptor.MenuGroupDescription" rootTagName="menu-group"/>
+        <dom.fileMetaData implementation="synergix.plugin.intellj.dom.descriptor.MenuIncludeDescription" rootTagName="menu-include"/>
     </extensions>
 
     <actions>

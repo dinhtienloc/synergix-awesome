@@ -16,6 +16,7 @@ public class SynergixNodeDescriptor extends NodeDescriptor implements CellAppear
 		super(project, parentDescriptor);
 		this.node = node;
 		this.myName = node.getMyName();
+		this.setIcon(node.getIcon());
 	}
 
 	@Override

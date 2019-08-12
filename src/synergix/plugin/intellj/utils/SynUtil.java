@@ -51,7 +51,7 @@ public class SynUtil {
 	}
 
 	public static PsiFile[] getFilesByName(Project project, String fileName, String moduleName) {
-		GlobalSearchScope searchScope = GlobalSearchScope.allScope(project);
+		GlobalSearchScope searchScope = GlobalSearchScope.projectScope(project);
 		if (moduleName != null) {
 			Module module = SynUtil.getModuleByName(project, moduleName);
 			if (module != null) searchScope = GlobalSearchScope.moduleScope(module);
