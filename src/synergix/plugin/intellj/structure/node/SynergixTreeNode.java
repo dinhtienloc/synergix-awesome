@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -73,7 +74,7 @@ public class SynergixTreeNode {
 
 	public void setMyName(String myName) {
 		this.myName = myName;
-		LOG.info("create " + this.getClass().getSimpleName() + " with name " + myName);
+//		LOG.info("create " + this.getClass().getSimpleName() + " with name " + myName);
 	}
 
 	public MenuElement getMenuElement() {
@@ -86,5 +87,18 @@ public class SynergixTreeNode {
 
 	public void setIcon(Icon icon) {
 		this.icon = icon;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || this.getClass() != o.getClass()) return false;
+		SynergixTreeNode that = (SynergixTreeNode) o;
+		return this.myName.equals(that.myName);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.myName);
 	}
 }

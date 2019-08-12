@@ -66,10 +66,8 @@ public class XHTMLFileReader {
 				this.paramBeanMap.put(paramPair[0], paramPair[1]);
 			}
 		} else {
-			BeanNode node = this.parseTagToFindBean(tag);
-			if (node != null) {
-				this.beanNodes.add(node);
-			}
+			Set<BeanNode> beanNodes = this.parseTagToFindBeanNode(tag);
+			this.beanNodes.addAll(beanNodes);
 		}
 	}
 
@@ -161,21 +159,38 @@ public class XHTMLFileReader {
 		return null;
 	}
 
-	private BeanNode parseTagToFindBean(XmlTag tag) {
-		String attrValueStr = tag.getAttributeValue("value");
-		if (attrValueStr != null && ElUtils.isElBlock(attrValueStr)) {
-			String expr = ElUtils.removeELBraces(attrValueStr);
+	private Set<BeanNode> parseTagToFindBeanNode(XmlTag tag) {
+		Set<BeanNode> beanNodes = new LinkedHashSet<>();
 
-			String realBeanName = this.findRealBeanFromParamMap(expr);
-			if (expr.indexOf(".") > 0) {
-				realBeanName = expr.substring(0, expr.indexOf("."));
-			}
-			realBeanName = this.findRealBeanFromParamMap(realBeanName);
+		List<String> attrStrs = new ArrayList<>();
+		attrStrs.add(tag.getAttributeValue("value"));
+		attrStrs.add(tag.getAttributeValue("action"));
+		attrStrs.add(tag.getAttributeValue("ajaxAction"));
 
-			PsiFile psiFileBean = this.findJavaClassBean(realBeanName);
-			if (psiFileBean != null) {
-				return this.createBeanNodeFromPsiFile(psiFileBean);
+		for (String attrStr : attrStrs) {
+			if (attrStr != null && ElUtils.isElBlock(attrStr)) {
+				BeanNode beanNode = this.buildBeanNodeFromElExpression(attrStr);
+				if (beanNode != null) {
+					beanNodes.add(beanNode);
+				}
 			}
+		}
+
+		return beanNodes;
+	}
+
+	private BeanNode buildBeanNodeFromElExpression(String elExpr) {
+		String expr = ElUtils.removeELBraces(elExpr);
+
+		String realBeanName = this.findRealBeanFromParamMap(expr);
+		if (expr.indexOf(".") > 0) {
+			realBeanName = expr.substring(0, expr.indexOf("."));
+		}
+		realBeanName = this.findRealBeanFromParamMap(realBeanName);
+
+		PsiFile psiFileBean = this.findJavaClassBean(realBeanName);
+		if (psiFileBean != null) {
+			return this.createBeanNodeFromPsiFile(psiFileBean);
 		}
 
 		return null;
