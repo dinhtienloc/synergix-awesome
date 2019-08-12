@@ -84,14 +84,14 @@ public class SynergixScreensBuilder {
 			this.buildMenuGroupNode(realParent, menuGroupChild);
 		}
 
-		LOG.info("Build tree for list of include tag: " + element.getXmlElement());
+//		LOG.info("Build tree for list of include tag: " + element.getXmlElement());
 		for (MenuIncludeElement includedChild : element.getDeclaredIncludes()) {
-			LOG.info("Build tree for included tag: " + includedChild.getIncludedXmlFile().getValue());
+//			LOG.info("Build tree for included tag: " + includedChild.getIncludedXmlFile().getValue());
 			this.buildIncludedNode(realParent, includedChild);
 		}
 
 		for (MenuItemElement menuItem : element.getDeclaredItems()) {
-			LOG.info("Build tree for menu item tag: " + menuItem.getXmlTag().getAttributeValue("form-code"));
+//			LOG.info("Build tree for menu item tag: " + menuItem.getXmlTag().getAttributeValue("form-code"));
 			this.buildMenuItemNode(realParent, menuItem);
 		}
 
