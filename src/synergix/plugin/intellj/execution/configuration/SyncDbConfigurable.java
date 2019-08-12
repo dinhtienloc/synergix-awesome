@@ -5,7 +5,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.SettingsEditor;
@@ -33,7 +36,7 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 	private LabeledComponent<JTextField> mySvnUser;
 	private LabeledComponent<JTextField> mySvnPass;
 	private JCheckBox myIamHackerCheckbox;
-	private JCheckBox runWithoutExportingSchemaCheckBox;
+	private LabeledComponent<JComboBox<String>> runType;
 
 	SyncDbConfigurable() {
 		this.mySuperModelDistDirectoryLabel.setLabelFor(this.mySuperModelDistDirectory.getTextField());
@@ -80,6 +83,12 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 				SyncDbConfigurable.this.updateDistDirectory();
 			}
 		});
+
+		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+		this.runType.getComponent().setModel(model);
+		model.addElement("Export");
+		model.addElement("Sync");
+		model.addElement("Export + Sync");
 	}
 
 	@Override
@@ -90,7 +99,7 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 		this.mySuperModelDistDirectory.setText(s.getSuperModelDistDirectory());
 		this.mySuperModelStableDirectory.setText(s.getSuperModelStableDirectory());
 		this.myIamHackerCheckbox.setSelected(s.isiAmHacker());
-		this.runWithoutExportingSchemaCheckBox.setSelected(s.isRunWithoutExportingSchema());
+		this.runType.getComponent().setSelectedItem(s.getRunType());
 	}
 
 	@Override
@@ -103,7 +112,7 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 		s.setSvnPass(this.mySvnPass.getComponent().getText());
 		s.setDbList(this.myDbListLabeledComponent.getComponent().getText());
 		s.setiAmHacker(this.myIamHackerCheckbox.isSelected());
-		s.setRunWithoutExportingSchema(this.runWithoutExportingSchemaCheckBox.isSelected());
+		s.setRunType((String)this.runType.getComponent().getSelectedItem());
 	}
 
 	@NotNull
@@ -148,8 +157,5 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 			int index = FilenameUtils.indexOfLastSeparator(stablePath);
 			this.mySuperModelDistDirectory.setText(stablePath.substring(0, index + 1) + "dist");
 		}
-	}
-
-	private void createUIComponents() {
 	}
 }

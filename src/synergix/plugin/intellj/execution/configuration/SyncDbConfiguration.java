@@ -115,11 +115,11 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		this.syncDbOptions.dbList = dbList;
 	}
 
-	public boolean isRunWithoutExportingSchema() {
-		return this.syncDbOptions.runWithouExportingSchema == null ? false : this.syncDbOptions.runWithouExportingSchema;
+	public String getRunType() {
+		return this.syncDbOptions.runType;
 	}
 
-	void setRunWithoutExportingSchema(boolean runWithoutExportingSchema) {
-		this.syncDbOptions.runWithouExportingSchema = runWithoutExportingSchema;
+	void setRunType(String runType) {
+		this.syncDbOptions.runType = runType;
 	}
 }

@@ -10,5 +10,5 @@ public class SyncDbConfigurationOptions {
 	public String svnPass;
 	public String dbList;
 	public Boolean iAmHacker;
-	public Boolean runWithouExportingSchema;
+	public String runType;
 }

@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.Properties;
 
 public class SyncDbRunnerState extends CommandLineState {
+    private final static String EXPORT_RUN_TYPE = "Export";
+    private final static String SYNC_RUN_TYPE = "Sync";
+    private final static String EXPORT_AND_SYNC_RUN_TYPE = "Export + Sync";
+
     private SyncDbConfiguration syncDbConfiguration;
 
     public SyncDbRunnerState(@NotNull ExecutionEnvironment environment, final SyncDbConfiguration syncDbConfiguration) {
@@ -51,19 +55,22 @@ public class SyncDbRunnerState extends CommandLineState {
         String settingFilePath = this.syncDbConfiguration.getSuperModelStableDirectory() + File.separator + "settings.ini";
         SyncDbRunnerUtil.extractPropertiesToFile(props, settingFilePath);
 
-        if (!this.syncDbConfiguration.isRunWithoutExportingSchema()) {
+        String runType = this.syncDbConfiguration.getRunType();
+        if (EXPORT_AND_SYNC_RUN_TYPE.equals(runType) || EXPORT_RUN_TYPE.equals(runType)) {
             boolean batCreated = SyncDbRunnerUtil.createNonGUIExportSchemeBat(supermodelStableDir);
             if (batCreated) {
                 bodies.add(SyncDbRunnerUtil.NON_GUI_EXPORT_SCHEMA_FILE_NAME);
             }
         }
 
-        bodies.add("cd " + this.syncDbConfiguration.getSuperModelDistDirectory());
-        String command = this.syncDbConfiguration.getDbCommand();
-        String schema = this.syncDbConfiguration.getDbSchema();
-        String syncTemplale = "(echo %s & echo. & java -jar SuperModel.jar --" + command + " --schema=" + schema + ".xml --db=%s --includeViews)";
-        for (String db : this.syncDbConfiguration.getDbList().split(",")) {
-            bodies.add(String.format(syncTemplale, db, db));
+        if (EXPORT_AND_SYNC_RUN_TYPE.equals(runType) || SYNC_RUN_TYPE.equals(runType)) {
+            bodies.add("cd " + this.syncDbConfiguration.getSuperModelDistDirectory());
+            String command = this.syncDbConfiguration.getDbCommand();
+            String schema = this.syncDbConfiguration.getDbSchema();
+            String syncTemplale = "(echo %s & echo. & java -jar SuperModel.jar --" + command + " --schema=" + schema + ".xml --db=%s --includeViews)";
+            for (String db : this.syncDbConfiguration.getDbList().split(",")) {
+                bodies.add(String.format(syncTemplale, db, db));
+            }
         }
 
         GeneralCommandLine generalCommandLine = new GeneralCommandLine(cmds);

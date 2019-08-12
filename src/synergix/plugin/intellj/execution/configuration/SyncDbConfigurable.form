@@ -189,20 +189,22 @@
                   <text value="I am hacker"/>
                 </properties>
               </component>
-              <component id="c4025" class="javax.swing.JCheckBox" binding="runWithoutExportingSchemaCheckBox">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <selected value="false"/>
-                  <text value="Run without exporting schema"/>
-                </properties>
-              </component>
               <hspacer id="ca1dd">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
+              <component id="4f181" class="com.intellij.openapi.ui.LabeledComponent" binding="runType">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <componentClass value="javax.swing.JComboBox"/>
+                  <labelInsets top="0" left="0" bottom="0" right="0"/>
+                  <labelLocation value="West"/>
+                  <text value="Run Type"/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>
