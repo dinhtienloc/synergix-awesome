@@ -12,8 +12,12 @@ Plugin repo: https://plugins.jetbrains.com/plugin/11303-synergix-awesome
 * Synergix Screens Tool Window: manage and display the code structure (XHTML + Bean + Service) for screens created by Synergix Framework.
 
 ### Change log
+**2.1**
+* Sync DB Configuration: Add option 'Run without exporting schema'.
+* Synergix Screens Tool Window: Add Reload Action and fully support detect CDI Beans used inside `value`, `action` and `ajaxAction` attribute in JSF tag.
+
 **2.0**
-* New feature: Synergix Screens Tool Window
+* New feature - Synergix Screens Tool Window: This tool window makes developers easier to understand the screen structure (Bean + XHTML) and provides a very convenient screen instant search instead of finding the code manually.
 
 **1.3**
 * Fix Sync DB Configuration is not saved after closing IDE.
