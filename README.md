@@ -9,7 +9,7 @@ Plugin repo: https://plugins.jetbrains.com/plugin/11303-synergix-awesome
 * Live Templates: auto generating code for common columns in XML Entity File.
 * String literal navigator everywhere.
 * Sync DB Run Configuration: allow run Sync DB directly from IDE.
-* Synergix Screens Tool Window: manage and display the code structure (XHTML + Bean + Service) for screens created by Synergix Framework.
+* Synergix Screens Tool Window: manage and display the code structure (XHTML + Bean) for screens created by Synergix Framework.
 
 ### Change log
 **2.1**
