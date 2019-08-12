@@ -13,7 +13,7 @@ Plugin repo: https://plugins.jetbrains.com/plugin/11303-synergix-awesome
 
 ### Change log
 **2.1**
-* Sync DB Configuration: Add option 'Run without exporting schema'.
+* Sync DB Configuration: Add option 'Run Type' with 3 running types: <b>Export</b>, <b>Sync</b> and <b>Export + Sync</b>.
 * Synergix Screens Tool Window: Add Reload Action and fully support detect CDI Beans used inside `value`, `action` and `ajaxAction` attribute in JSF tag.
 
 **2.0**
