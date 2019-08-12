@@ -5,18 +5,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Arrays;
 import java.util.Properties;
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComponentWithBrowseButton;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.PanelWithAnchor;
-import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.components.JBLabel;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,38 +19,23 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> implements PanelWithAnchor {
-	private SyncDbConfiguration syncDbConfiguration;
-	private Project myProject;
 	private JPanel myWholePanel;
-	private JComponent anchor;
-	private LabeledComponent<ComponentWithBrowseButton> myMainClass;
 
-	private JPanel mySuperModelDistOption;
 	private JBLabel mySuperModelDistDirectoryLabel;
 	private TextFieldWithBrowseButton mySuperModelDistDirectory;
 
-	private JPanel mySuperModelStableOption;
 	private JBLabel mySuperModelStableDirectoryLabel;
 	private TextFieldWithBrowseButton mySuperModelStableDirectory;
 
-	private JPanel dbCommandOption;
 	private LabeledComponent<JTextField> myCommandOption;
 	private LabeledComponent<JTextField> myDbListLabeledComponent;
 	private LabeledComponent<JTextField> mySchemaOption;
-	private JPanel mySyncActionPanel;
-	private JPanel myDbListPanel;
-	private JPanel mySvnPanel;
 	private LabeledComponent<JTextField> mySvnUser;
 	private LabeledComponent<JTextField> mySvnPass;
-	private JPanel myIamHackerPanel;
 	private JCheckBox myIamHackerCheckbox;
+	private JCheckBox runWithoutExportingSchemaCheckBox;
 
-	private LabeledComponent<RawCommandLineEditor> settingOption;
-
-	private JPanel dbNamesOption;
-
-	public SyncDbConfigurable(final Project project) {
-		this.myProject = project;
+	SyncDbConfigurable() {
 		this.mySuperModelDistDirectoryLabel.setLabelFor(this.mySuperModelDistDirectory.getTextField());
 		this.mySuperModelStableDirectoryLabel.setLabelFor(this.mySuperModelStableDirectory.getTextField());
 
@@ -104,25 +84,26 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 
 	@Override
 	protected void resetEditorFrom(@NotNull SyncDbConfiguration s) {
-		this.syncDbConfiguration = s;
 		this.myCommandOption.getComponent().setText(s.getDbCommand());
 		this.mySchemaOption.getComponent().setText(s.getDbSchema());
 		this.myDbListLabeledComponent.getComponent().setText(s.getDbList());
 		this.mySuperModelDistDirectory.setText(s.getSuperModelDistDirectory());
 		this.mySuperModelStableDirectory.setText(s.getSuperModelStableDirectory());
-
+		this.myIamHackerCheckbox.setSelected(s.isiAmHacker());
+		this.runWithoutExportingSchemaCheckBox.setSelected(s.isRunWithoutExportingSchema());
 	}
 
 	@Override
-	protected void applyEditorTo(@NotNull SyncDbConfiguration s) throws ConfigurationException {
+	protected void applyEditorTo(@NotNull SyncDbConfiguration s) {
 		s.setSuperModelDistDirectory(this.mySuperModelDistDirectory.getText());
 		s.setSuperModelStableDirectory(this.mySuperModelStableDirectory.getText());
 		s.setDbCommand(this.myCommandOption.getComponent().getText());
 		s.setDbSchema(this.mySchemaOption.getComponent().getText());
 		s.setSvnUser(this.mySvnUser.getComponent().getText());
 		s.setSvnPass(this.mySvnPass.getComponent().getText());
-		s.setiAmHacker(this.myIamHackerCheckbox.isSelected());
 		s.setDbList(this.myDbListLabeledComponent.getComponent().getText());
+		s.setiAmHacker(this.myIamHackerCheckbox.isSelected());
+		s.setRunWithoutExportingSchema(this.runWithoutExportingSchemaCheckBox.isSelected());
 	}
 
 	@NotNull
@@ -138,7 +119,6 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 
 	@Override
 	public void setAnchor(@Nullable JComponent anchor) {
-		this.anchor = anchor;
 		this.mySuperModelDistDirectoryLabel.setAnchor(anchor);
 		this.mySuperModelStableDirectoryLabel.setAnchor(anchor);
 	}
@@ -156,7 +136,7 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 				this.mySvnPass.getComponent().setText(prop.getProperty("svn.pass"));
 				this.myIamHackerCheckbox.setSelected("Y".equals(prop.getProperty("iamahacker")));
 
-			} catch (Exception e) {
+			} catch (Exception ignored) {
 			}
 
 		}
@@ -171,6 +151,5 @@ public class SyncDbConfigurable extends SettingsEditor<SyncDbConfiguration> impl
 	}
 
 	private void createUIComponents() {
-		// TODO: place custom component creation code here
 	}
 }

@@ -51,15 +51,19 @@ public class SyncDbRunnerState extends CommandLineState {
         String settingFilePath = this.syncDbConfiguration.getSuperModelStableDirectory() + File.separator + "settings.ini";
         SyncDbRunnerUtil.extractPropertiesToFile(props, settingFilePath);
 
-        if (SyncDbRunnerUtil.createNonGUIExportSchemeBat(supermodelStableDir)) {
-            bodies.add(SyncDbRunnerUtil.NON_GUI_EXPORT_SCHEMA_FILE_NAME);
-            bodies.add("cd " + this.syncDbConfiguration.getSuperModelDistDirectory());
-            String command = this.syncDbConfiguration.getDbCommand();
-            String schema = this.syncDbConfiguration.getDbSchema();
-            String syncTemplale = "(echo %s & echo. & java -jar SuperModel.jar --" + command + " --schema=" + schema + ".xml --db=%s --includeViews)";
-            for (String db : this.syncDbConfiguration.getDbList().split(",")) {
-                bodies.add(String.format(syncTemplale, db, db));
+        if (!this.syncDbConfiguration.isRunWithoutExportingSchema()) {
+            boolean batCreated = SyncDbRunnerUtil.createNonGUIExportSchemeBat(supermodelStableDir);
+            if (batCreated) {
+                bodies.add(SyncDbRunnerUtil.NON_GUI_EXPORT_SCHEMA_FILE_NAME);
             }
+        }
+
+        bodies.add("cd " + this.syncDbConfiguration.getSuperModelDistDirectory());
+        String command = this.syncDbConfiguration.getDbCommand();
+        String schema = this.syncDbConfiguration.getDbSchema();
+        String syncTemplale = "(echo %s & echo. & java -jar SuperModel.jar --" + command + " --schema=" + schema + ".xml --db=%s --includeViews)";
+        for (String db : this.syncDbConfiguration.getDbList().split(",")) {
+            bodies.add(String.format(syncTemplale, db, db));
         }
 
         GeneralCommandLine generalCommandLine = new GeneralCommandLine(cmds);

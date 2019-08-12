@@ -20,18 +20,15 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 
 	private SyncDbConfigurationOptions syncDbOptions;
 
-	public SyncDbConfiguration(Project project, ConfigurationFactory factory, String name) {
+	SyncDbConfiguration(Project project, ConfigurationFactory factory, String name) {
 		super(project, factory, name);
-	}
-
-	public SyncDbConfigurationOptions getSyncDbOptions() {
-		return this.syncDbOptions;
+		this.syncDbOptions = new SyncDbConfigurationOptions();
 	}
 
 	@NotNull
 	@Override
 	public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
-		return new SyncDbConfigurable(this.getProject());
+		return new SyncDbConfigurable();
 	}
 
 	@Override
@@ -50,7 +47,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 
 	@Nullable
 	@Override
-	public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
+	public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) {
 		return new SyncDbRunnerState(environment, this);
 	}
 
@@ -58,7 +55,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		return this.syncDbOptions.superModelDistDirectory;
 	}
 
-	public void setSuperModelDistDirectory(String superModelDistDirectory) {
+	void setSuperModelDistDirectory(String superModelDistDirectory) {
 		this.syncDbOptions.superModelDistDirectory = superModelDistDirectory;
 	}
 
@@ -66,7 +63,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		return this.syncDbOptions.superModelStableDirectory;
 	}
 
-	public void setSuperModelStableDirectory(String superModelStableDirectory) {
+	void setSuperModelStableDirectory(String superModelStableDirectory) {
 		this.syncDbOptions.superModelStableDirectory = superModelStableDirectory;
 	}
 
@@ -74,7 +71,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		return this.syncDbOptions.dbCommand;
 	}
 
-	public void setDbCommand(String dbCommand) {
+	void setDbCommand(String dbCommand) {
 		this.syncDbOptions.dbCommand = dbCommand;
 	}
 
@@ -82,7 +79,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		return this.syncDbOptions.dbSchema;
 	}
 
-	public void setDbSchema(String dbSchema) {
+	void setDbSchema(String dbSchema) {
 		this.syncDbOptions.dbSchema = dbSchema;
 	}
 
@@ -90,7 +87,7 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		return this.syncDbOptions.svnUser;
 	}
 
-	public void setSvnUser(String svnUser) {
+	void setSvnUser(String svnUser) {
 		this.syncDbOptions.svnUser = svnUser;
 	}
 
@@ -98,15 +95,15 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		return this.syncDbOptions.svnPass;
 	}
 
-	public void setSvnPass(String svnPass) {
+	void setSvnPass(String svnPass) {
 		this.syncDbOptions.svnPass = svnPass;
 	}
 
 	public boolean isiAmHacker() {
-		return this.syncDbOptions.iAmHacker;
+		return this.syncDbOptions.iAmHacker == null ? false : this.syncDbOptions.iAmHacker;
 	}
 
-	public void setiAmHacker(boolean iAmHacker) {
+	void setiAmHacker(boolean iAmHacker) {
 		this.syncDbOptions.iAmHacker = iAmHacker;
 	}
 
@@ -114,7 +111,15 @@ public class SyncDbConfiguration extends RunConfigurationBase {
 		return this.syncDbOptions.dbList;
 	}
 
-	public void setDbList(String dbList) {
+	void setDbList(String dbList) {
 		this.syncDbOptions.dbList = dbList;
+	}
+
+	public boolean isRunWithoutExportingSchema() {
+		return this.syncDbOptions.runWithouExportingSchema == null ? false : this.syncDbOptions.runWithouExportingSchema;
+	}
+
+	void setRunWithoutExportingSchema(boolean runWithoutExportingSchema) {
+		this.syncDbOptions.runWithouExportingSchema = runWithoutExportingSchema;
 	}
 }

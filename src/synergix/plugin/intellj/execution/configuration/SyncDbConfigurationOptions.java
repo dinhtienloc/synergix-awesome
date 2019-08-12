@@ -8,6 +8,7 @@ public class SyncDbConfigurationOptions {
 	public String dbSchema;
 	public String svnUser;
 	public String svnPass;
-	public Boolean iAmHacker;
 	public String dbList;
+	public Boolean iAmHacker;
+	public Boolean runWithouExportingSchema;
 }

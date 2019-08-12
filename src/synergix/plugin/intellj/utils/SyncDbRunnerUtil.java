@@ -26,20 +26,22 @@ public class SyncDbRunnerUtil {
         return writeFile(supermodelStableDirectory + File.separator + NON_GUI_EXPORT_SCHEMA_FILE_NAME, lines);
     }
 
-    public static boolean extractPropertiesToFile(Properties properties, String settingPath) {
+    public static void extractPropertiesToFile(Properties properties, String settingPath) {
         Path path = createFile(settingPath);
+        if (path == null) return;
+
         try (OutputStream output = new FileOutputStream(path.toFile())) {
             properties.store(output, null);
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
-
-        return true;
     }
-    public static boolean writeFile(String path, List<String> lines) {
+
+    private static boolean writeFile(String path, List<String> lines) {
         try {
             Path file = createFile(path);
+            if (file == null) return false;
+
             Files.write(file, lines, Charset.forName("UTF-8"));
             return true;
         } catch (IOException e) {
@@ -47,7 +49,7 @@ public class SyncDbRunnerUtil {
         }
     }
 
-    public static Path createFile(String path) {
+    private static Path createFile(String path) {
         try {
             Path file = Paths.get(path);
             if (!Files.exists(file)) {
