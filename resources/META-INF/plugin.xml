@@ -11,8 +11,15 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <ul>2.1
+        <li>Sync DB Configuration: Add 'Run Type' option with 3 running types: <b>Export</b>, <b>Sync</b> and <b>Export + Sync</b>.</li>
+        <li>Synergix Screens Tool Window: Add Reload Action and fully detect CDI Beans used inside <i>value</i>, <i>action</i> and <i>ajaxAction</i> attributes in JSF tag.</li>
+      </ul>
+      <ul>2.0
+        <li>New feature - Synergix Screens Tool Window: This tool window makes developers easier to understand the screen structure (Bean + XHTML) and provides a very convenient screen instant search instead of finding the code manually.
+      </ul>
       <ul>1.3
-        <li>Fix Sync DB can't store after closing IDE.</li>
+        <li>Fix Sync DB can't save the state after closing IDE.</li>
         <li>Move the IDE compatibility version to 162.</li>
         <li>Refactor the code.</li>
       </ul>
