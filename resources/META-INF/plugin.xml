@@ -29,7 +29,6 @@
       </ul>
       <ul>1.2
         <li>Include all properties from settings.ini in Sync DB Configuration.</li>
-        <li>Fix Sync DB can't store after closing IDE.</li>
       </ul>
       <ul>1.1
         <li>Fix Sync DB don't stop when extracting tables get errors.</li>
