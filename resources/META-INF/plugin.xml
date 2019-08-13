@@ -8,6 +8,15 @@
 
     <description><![CDATA[
       This plugin provides a bunch of utilities to help developers code faster with Synergix Framework.
+
+      <ul>Feature:
+        <li>Code completion: SynComponent's attributes such as labelKey, numberType, data-type...
+        <li>File Template: XML Entity File.
+        <li>Live Templates: auto generating code for common columns in XML Entity File.
+        <li>String literal navigator everywhere.
+        <li>Sync DB Run Configuration: allow run Sync DB directly from IDE.
+        <li>Synergix Screens Tool Window: This tool window makes developers easier to understand the screen structure (Bean + XHTML) and provides a very convenient screen instant search instead of finding the code manually.
+      </ul>
     ]]></description>
 
     <change-notes><![CDATA[
@@ -16,7 +25,7 @@
         <li>Synergix Screens Tool Window: Add Reload Action and fully detect CDI Beans used inside <i>value</i>, <i>action</i> and <i>ajaxAction</i> attributes in JSF tag.</li>
       </ul>
       <ul>2.0
-        <li>New feature - Synergix Screens Tool Window: This tool window makes developers easier to understand the screen structure (Bean + XHTML) and provides a very convenient screen instant search instead of finding the code manually.
+        <li>New feature - Synergix Screens Tool Window: Manage and display the code structure (XHTML + Bean) for screens created by Synergix Framework.
       </ul>
       <ul>1.3
         <li>Fix Sync DB can't save the state after closing IDE.</li>

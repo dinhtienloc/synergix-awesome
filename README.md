@@ -9,7 +9,7 @@ Plugin repo: https://plugins.jetbrains.com/plugin/11303-synergix-awesome
 * Live Templates: auto generating code for common columns in XML Entity File.
 * String literal navigator everywhere.
 * Sync DB Run Configuration: allow run Sync DB directly from IDE.
-* Synergix Screens Tool Window: manage and display the code structure (XHTML + Bean) for screens created by Synergix Framework.
+* Synergix Screens Tool Window: Makes developers easier to understand the screen structure (Bean + XHTML) and provides a very convenient screen instant search instead of finding the code manually.
 
 ### Change log
 **2.1**
@@ -17,7 +17,7 @@ Plugin repo: https://plugins.jetbrains.com/plugin/11303-synergix-awesome
 * Synergix Screens Tool Window: Add Reload Action and fully support detect CDI Beans used inside `value`, `action` and `ajaxAction` attribute in JSF tag.
 
 **2.0**
-* New feature - Synergix Screens Tool Window: This tool window makes developers easier to understand the screen structure (Bean + XHTML) and provides a very convenient screen instant search instead of finding the code manually.
+* New feature - Synergix Screens Tool Window: Manage and display the code structure (XHTML + Bean) for screens created by Synergix Framework.
 
 **1.3**
 * Fix Sync DB Configuration is not saved after closing IDE.
